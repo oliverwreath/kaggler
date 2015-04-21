@@ -20,11 +20,9 @@ featureEngineering <- function(myData){
 	#Consolidate Cities
 	myData$City                                      <- as.character(myData$City)
 	myData$City[myData$City.Group == "Other"]        <- "Other"
-	myData$City[myData$City == unique(myData$City)[4]] <- unique(myData$City)[2]
-	myData$City                                      <- as.factor(myData$City)
 	myData$City.Group                                <- NULL
 
-	# myData$yy = as.numeric(myData$yy / 1000)
+	myData$yy = as.numeric(myData$yy / 1000)
   
   #expand factor features 
 	typeInd = model.matrix( ~ Type - 1, data=myData )

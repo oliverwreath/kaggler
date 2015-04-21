@@ -3,16 +3,19 @@ library(caret)
 
 #Approach Random Forest 
 pp = c("center", "scale") #c("ica") 
+trainCtrl = trainControl(method = "repeatedcv", number = 3, repeats = 5, verboseIter = FALSE, returnResamp = "final") #, classProbs = TRUE)
+
 TUNE_LEN = 3 
-model <- train(revenue~. , data = trainData, tuneLength = TUNE_LEN )#,tuneLength = TUNE_LEN   , preProc = pp
+model <- train(revenue~. , data = trainData, tuneLength = TUNE_LEN, trControl = trainCtrl )#,tuneLength = TUNE_LEN, trControl = trainCtrl   , preProc = pp
 plot(model)
+model 
 #0.4045332
 #Make a Prediction 
 prediction <- predict(model, testData) 
 #Make Submission 
 submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 colnames(submit) <- c("Id", "Prediction") 
-write.csv(submit, "rsub_Boruta_caretRF_v3.csv", row.names=FALSE, quote=FALSE) 
+write.csv(submit, "rsub_Boruta_caretRF_v4.csv", row.names=FALSE, quote=FALSE) 
 
 #Approach tuneRF 
 model <- tuneRF(trainData[,-dim(trainData)[2]], trainData[,dim(trainData)[2]], stepFactor=1.5, doBest=TRUE) 
@@ -23,7 +26,7 @@ prediction <- predict(model, testData)
 #Make Submission 
 submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 colnames(submit) <- c("Id", "Prediction") 
-write.csv(submit, "rsub_tuneRF_v3.csv", row.names=FALSE, quote=FALSE) 
+write.csv(submit, "rsub_tuneRF_v4.csv", row.names=FALSE, quote=FALSE) 
 
 library('extraTrees') 
 model = extraTrees( as.matrix(trainData[,-dim(trainData)[2]] ), as.numeric(trainData[,dim(trainData)[2]]) ) 
@@ -32,7 +35,7 @@ options( java.parameters = "-Xmx20g" )
 prediction = predict(model, testData) #, probability=TRUE
 submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 colnames(submit) <- c("Id", "Prediction") 
-write.csv(submit, "rsub_extraTrees_v3.csv", row.names=FALSE, quote=FALSE) 
+write.csv(submit, "rsub_extraTrees_v4.csv", row.names=FALSE, quote=FALSE) 
 
 
 library('e1071') 
@@ -44,21 +47,20 @@ prediction <- predict(model, testData)
 ##generate output
 submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 colnames(submit) <- c("Id", "Prediction") 
-write.csv(submit, "rsub_SVM_e1071_v3.csv", row.names=FALSE, quote=FALSE) 
+write.csv(submit, "rsub_SVM_e1071_v4.csv", row.names=FALSE, quote=FALSE) 
 
-TUNE_LEN = 20
 #knn
 tryCatch({
 	##build our model
 	model <- train(formula, method = "knn", verbose = FALSE,  
-	                     data = trainData, tuneLength = TUNE_LEN) 
+	                     data = trainData, tuneLength = TUNE_LEN, trControl = trainCtrl) 
 	summary(model); plot(model) 
 	##get best prediction 
 	prediction <- predict(model, newdata = testData)
 	##generate output
 	submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 	colnames(submit) <- c("Id", "Prediction") 
-	write.csv(submit, "rsub_KNN_v3.csv", row.names=FALSE, quote=FALSE) 
+	write.csv(submit, "rsub_KNN_v4.csv", row.names=FALSE, quote=FALSE) 
 }, error = function(err) {
   print(paste("MY_ERROR:  ", err))
 })
@@ -77,7 +79,7 @@ tryCatch({
 # 	##generate output
 # 	submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 # 	colnames(submit) <- c("Id", "Prediction") 
-# 	write.csv(submit, "rsub_avNNet_v3.csv", row.names=FALSE, quote=FALSE) 
+# 	write.csv(submit, "rsub_avNNet_v4.csv", row.names=FALSE, quote=FALSE) 
 # }, error = function(err) {
 #   print(paste("MY_ERROR:  ", err))
 # })
@@ -93,7 +95,7 @@ tryCatch({
 #   ##generate output
 #   submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 #   colnames(submit) <- c("Id", "Prediction") 
-#   write.csv(submit, "rsub_nnet_v3.csv", row.names=FALSE, quote=FALSE) 
+#   write.csv(submit, "rsub_nnet_v4.csv", row.names=FALSE, quote=FALSE) 
 # }, error = function(err) {
 #   print(paste("MY_ERROR:  ", err))
 # })
@@ -109,7 +111,7 @@ tryCatch({
 #   ##generate output
 #   submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 #   colnames(submit) <- c("Id", "Prediction") 
-#   write.csv(submit, "rsub_dnn_v3.csv", row.names=FALSE, quote=FALSE) 
+#   write.csv(submit, "rsub_dnn_v4.csv", row.names=FALSE, quote=FALSE) 
 # }, error = function(err) {
 #   print(paste("MY_ERROR:  ", err))
 # })
@@ -127,7 +129,7 @@ tryCatch({
 # 	# predict.glmnet = max.col(matrix(predict.glmnet,dim(predict.glmnet)[1],dim(predict.glmnet)[2]))
 # 	##generate output 
 # 	submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
-# 	write.csv(submit, file="rsub_glmnet_v3.csv", row.names=FALSE, quote=FALSE) 
+# 	write.csv(submit, file="rsub_glmnet_v4.csv", row.names=FALSE, quote=FALSE) 
 # }, error = function(err) {
 #   print(paste("MY_ERROR:  ", err))
 # })
