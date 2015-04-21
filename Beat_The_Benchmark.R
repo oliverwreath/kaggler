@@ -66,16 +66,15 @@ tryCatch({
 })
 
 # library(caret)
-# # trainCtrl = trainControl(method = "repeatedcv", number = 3, repeats = 3, verboseIter = FALSE, returnResamp = "final") #, classProbs = TRUE)
 # #avnet
 # tryCatch({
 # 	library('nnet') 
 # 	##train
-# 	trained.NNET <- train(formula, method = "avNNet", verbose = FALSE,  
-# 	                    data = trainData, tuneLength = TUNE_LEN) 
-# 	summary(trained.NNET); plot(trained.NNET) 
+# 	model <- train(formula, method = "avNNet", verbose = FALSE,  
+# 	                    data = trainData, tuneLength = TUNE_LEN, trControl = trainCtrl) 
+# 	summary(model); plot(model) 
 # 	##predict 
-# 	prediction <- predict(trained.NNET, newdata = testData)
+# 	prediction <- predict(model, newdata = testData)
 # 	##generate output
 # 	submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 # 	colnames(submit) <- c("Id", "Prediction") 
@@ -85,33 +84,33 @@ tryCatch({
 # })
 
 # tryCatch({
-#   library('nnet') 
-#   ##train
-#   trained.NNET <- train(formula, method = "nnet", verbose = FALSE,  
-#                         data = trainData, tuneLength = TUNE_LEN) 
-#   summary(trained.NNET); plot(trained.NNET) 
-#   ##predict 
-#   prediction <- predict(trained.NNET, newdata = testData)
-#   ##generate output
-#   submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
-#   colnames(submit) <- c("Id", "Prediction") 
-#   write.csv(submit, "rsub_nnet_v4.csv", row.names=FALSE, quote=FALSE) 
+# 	library('nnet') 
+# 	##train
+# 	model <- train(formula, method = "nnet", verbose = FALSE,  
+# 	                    data = trainData, tuneLength = TUNE_LEN, trControl = trainCtrl) 
+# 	summary(model); plot(model) 
+# 	##predict 
+# 	prediction <- predict(model, newdata = testData)
+# 	##generate output
+# 	submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
+# 	colnames(submit) <- c("Id", "Prediction") 
+# 	write.csv(submit, "rsub_nnet_v4.csv", row.names=FALSE, quote=FALSE) 
 # }, error = function(err) {
 #   print(paste("MY_ERROR:  ", err))
 # })
 
 # tryCatch({
-#   library('nnet') 
-#   ##train
-#   trained.NNET <- train(formula, method = "dnn", verbose = T,  
-#                         data = trainData, tuneLength = TUNE_LEN) 
-#   summary(trained.NNET); plot(trained.NNET) 
-#   ##predict 
-#   prediction <- predict(trained.NNET, newdata = testData)
-#   ##generate output
-#   submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
-#   colnames(submit) <- c("Id", "Prediction") 
-#   write.csv(submit, "rsub_dnn_v4.csv", row.names=FALSE, quote=FALSE) 
+# 	library('nnet') 
+# 	##train
+# 	model <- train(formula, method = "dnn", verbose = T,  
+# 	                    data = trainData, tuneLength = TUNE_LEN, trControl = trainCtrl) 
+# 	summary(model); plot(model) 
+# 	##predict 
+# 	prediction <- predict(model, newdata = testData)
+# 	##generate output
+# 	submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
+# 	colnames(submit) <- c("Id", "Prediction") 
+# 	write.csv(submit, "rsub_dnn_v4.csv", row.names=FALSE, quote=FALSE) 
 # }, error = function(err) {
 #   print(paste("MY_ERROR:  ", err))
 # })
