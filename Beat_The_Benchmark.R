@@ -3,9 +3,9 @@ library(caret)
 
 #Approach Random Forest 
 pp = c("center", "scale") #c("ica") 
-trainCtrl = trainControl(method = "repeatedcv", number = 3, repeats = 5, verboseIter = FALSE, returnResamp = "final") #, classProbs = TRUE)
+trainCtrl = trainControl(method = "repeatedcv", number = 10, repeats = 10, verboseIter = FALSE, returnResamp = "final") #, classProbs = TRUE)
 
-TUNE_LEN = 3 
+TUNE_LEN = 10 
 model <- train(revenue~. , data = trainData, tuneLength = TUNE_LEN, trControl = trainCtrl )#,tuneLength = TUNE_LEN, trControl = trainCtrl   , preProc = pp
 plot(model)
 model 
