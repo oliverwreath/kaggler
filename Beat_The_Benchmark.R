@@ -15,7 +15,7 @@ prediction <- predict(model, testData)
 #Make Submission 
 submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 colnames(submit) <- c("Id", "Prediction") 
-write.csv(submit, "rsub_Boruta_caretRF_v4.csv", row.names=FALSE, quote=FALSE) 
+write.csv(submit, "cor_rsub_Boruta_caretRF_v4.csv", row.names=FALSE, quote=FALSE) 
 
 #Approach tuneRF 
 model <- tuneRF(trainData[,-dim(trainData)[2]], trainData[,dim(trainData)[2]], stepFactor=1.5, doBest=TRUE) 
@@ -26,7 +26,7 @@ prediction <- predict(model, testData)
 #Make Submission 
 submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 colnames(submit) <- c("Id", "Prediction") 
-write.csv(submit, "rsub_tuneRF_v4.csv", row.names=FALSE, quote=FALSE) 
+write.csv(submit, "cor_rsub_tuneRF_v4.csv", row.names=FALSE, quote=FALSE) 
 
 library('extraTrees') 
 model = extraTrees( as.matrix(trainData[,-dim(trainData)[2]] ), as.numeric(trainData[,dim(trainData)[2]]) ) 
@@ -35,19 +35,19 @@ options( java.parameters = "-Xmx20g" )
 prediction = predict(model, testData) #, probability=TRUE
 submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 colnames(submit) <- c("Id", "Prediction") 
-write.csv(submit, "rsub_extraTrees_v4.csv", row.names=FALSE, quote=FALSE) 
+write.csv(submit, "cor_rsub_extraTrees_v4.csv", row.names=FALSE, quote=FALSE) 
 
 
 library('e1071') 
 ##build our model
-model <- svm(formula, data = trainData, cross = 3) 
-summary(model) plot(model)
+model <- svm(formula, data = trainData, cross = 10) 
+summary(model); plot(model)
 ##run model against test set
 prediction <- predict(model, testData) 
 ##generate output
 submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 colnames(submit) <- c("Id", "Prediction") 
-write.csv(submit, "rsub_SVM_e1071_v4.csv", row.names=FALSE, quote=FALSE) 
+write.csv(submit, "cor_rsub_SVM_e1071_v4.csv", row.names=FALSE, quote=FALSE) 
 
 #knn
 tryCatch({
@@ -60,7 +60,7 @@ tryCatch({
 	##generate output
 	submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 	colnames(submit) <- c("Id", "Prediction") 
-	write.csv(submit, "rsub_KNN_v4.csv", row.names=FALSE, quote=FALSE) 
+	write.csv(submit, "cor_rsub_KNN_v4.csv", row.names=FALSE, quote=FALSE) 
 }, error = function(err) {
   print(paste("MY_ERROR:  ", err))
 })
@@ -78,7 +78,7 @@ tryCatch({
 # 	##generate output
 # 	submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 # 	colnames(submit) <- c("Id", "Prediction") 
-# 	write.csv(submit, "rsub_avNNet_v4.csv", row.names=FALSE, quote=FALSE) 
+# 	write.csv(submit, "cor_rsub_avNNet_v4.csv", row.names=FALSE, quote=FALSE) 
 # }, error = function(err) {
 #   print(paste("MY_ERROR:  ", err))
 # })
@@ -94,7 +94,7 @@ tryCatch({
 # 	##generate output
 # 	submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 # 	colnames(submit) <- c("Id", "Prediction") 
-# 	write.csv(submit, "rsub_nnet_v4.csv", row.names=FALSE, quote=FALSE) 
+# 	write.csv(submit, "cor_rsub_nnet_v4.csv", row.names=FALSE, quote=FALSE) 
 # }, error = function(err) {
 #   print(paste("MY_ERROR:  ", err))
 # })
@@ -110,7 +110,7 @@ tryCatch({
 # 	##generate output
 # 	submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
 # 	colnames(submit) <- c("Id", "Prediction") 
-# 	write.csv(submit, "rsub_dnn_v4.csv", row.names=FALSE, quote=FALSE) 
+# 	write.csv(submit, "cor_rsub_dnn_v4.csv", row.names=FALSE, quote=FALSE) 
 # }, error = function(err) {
 #   print(paste("MY_ERROR:  ", err))
 # })
@@ -128,7 +128,7 @@ tryCatch({
 # 	# predict.glmnet = max.col(matrix(predict.glmnet,dim(predict.glmnet)[1],dim(predict.glmnet)[2]))
 # 	##generate output 
 # 	submit <- as.data.frame(cbind(seq(0, length(prediction) - 1, by=1), exp(prediction))) 
-# 	write.csv(submit, file="rsub_glmnet_v4.csv", row.names=FALSE, quote=FALSE) 
+# 	write.csv(submit, file="cor_rsub_glmnet_v4.csv", row.names=FALSE, quote=FALSE) 
 # }, error = function(err) {
 #   print(paste("MY_ERROR:  ", err))
 # })
