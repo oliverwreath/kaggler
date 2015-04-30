@@ -44,14 +44,14 @@ from sklearn.neighbors import KNeighborsClassifier
 
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier, AdaBoostClassifier, GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier, BaggingClassifier, AdaBoostClassifier, GradientBoostingClassifier
 
 
 h = .02  # step size in the mesh
 
 names = ["Generalized Linear Models", "LDA", "QDA", "Linear SVM", "RBF SVM", 
             "Stochastic Gradient Descent", "Nearest Neighbors", 
-            "Naive Bayes", "Decision Tree",
+            "Naive Bayes", "Decision Tree", "BaggingClassifier", 
             "Random Forest", "Extremely Randomized Trees", 
             "AdaBoost", "Gradient Tree Boosting"
             ]
@@ -67,6 +67,7 @@ classifiers = [
     
     GaussianNB(), 
     DecisionTreeClassifier(max_depth=5), 
+    BaggingClassifier(),
 
     RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
     ExtraTreesClassifier(n_estimators=10, max_depth=None,
@@ -74,7 +75,7 @@ classifiers = [
 
     AdaBoostClassifier(),
     GradientBoostingClassifier(n_estimators=100, learning_rate=1.0,
-        max_depth=1, random_state=0).fit(X_train, y_train) 
+        max_depth=1, random_state=0) 
     ]
 # #1.1. Generalized Linear Models
 # classifier = linear_model.LogisticRegression(C=1e5)

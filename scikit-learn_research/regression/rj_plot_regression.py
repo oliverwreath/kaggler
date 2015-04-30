@@ -20,9 +20,9 @@ print(__doc__)
 # Generate sample data
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn import neighbors, linear_model, svm 
+from sklearn import neighbors, linear_model, svm, tree 
 from sklearn.neighbors import KNeighborsRegressor, RadiusNeighborsRegressor
-
+from sklearn.ensemble import RandomForestRegressor, ExtraTreesRegressor, BaggingRegressor, AdaBoostRegressor, GradientBoostingRegressor
 
 np.random.seed(0)
 X = np.sort(5 * np.random.rand(40, 1), axis=0)
@@ -38,29 +38,42 @@ y[::5] += 1 * (0.5 - np.random.rand(8))
 n_neighbors = 5
 
 names = [
-	'KNeighborsRegressor uniform', 'KNeighborsRegressor distance', "1.1.2. Ridge Regression",
-	'1.1.6. Least Angle Regression', "1.1.9.1. Bayesian Ridge Regression", "1.4. Support Vector Machines",
-	"1.5. Stochastic Gradient Descent", "1.6. Nearest Neighbors", "Radius KNN"
+	"1.1.2. Ridge Regression", '1.1.6. Least Angle Regression', "1.1.9.1. Bayesian Ridge Regression", 
+	"1.4. Support Vector Machines", "1.5. Stochastic Gradient Descent", 
+	"1.6. Nearest Neighbors uniform", "1.6. Nearest Neighbors distance", "Radius KNN",
+	"1.10. Decision Trees", "1.11.1. Bagging", 
+	"Random Forest", "Extremely Randomized Trees", 
+	"AdaBoost", "Gradient Tree Boosting" 
 ]
 classifiers = [
-	KNeighborsRegressor(n_neighbors, weights='uniform'),
-	KNeighborsRegressor(n_neighbors, weights='distance'), 
 	linear_model.Ridge (alpha = .5), 
-	
 	linear_model.Lars(), 
 	linear_model.BayesianRidge(), 
-	svm.SVR(), 
 
+	svm.SVR(), 
 	linear_model.SGDRegressor(),
-	KNeighborsRegressor(),
-	RadiusNeighborsRegressor()
+
+	KNeighborsRegressor(n_neighbors, weights='uniform'),
+	KNeighborsRegressor(n_neighbors, weights='distance'), 
+	RadiusNeighborsRegressor(), 
+
+	tree.DecisionTreeRegressor(), 
+    BaggingRegressor(),
+
+    RandomForestRegressor(max_depth=5, n_estimators=10, max_features=1),
+    ExtraTreesRegressor(n_estimators=10, max_depth=None,
+            min_samples_split=1, random_state=0), 
+
+    AdaBoostRegressor(),
+    GradientBoostingRegressor(n_estimators=100, learning_rate=1.0,
+        max_depth=1, random_state=0) 
 ]
 
 i = 1 
-x_num = len(names)
-y_num = 1
-X_size = 1.6
-Y_size = 8.0
+x_num = 7#len(names)
+y_num = 2
+X_size = 1.7
+Y_size = 7.0
 plt.subplots(x_num, y_num, sharey = True, figsize=(y_num * Y_size, x_num * X_size) )
 
 for name, classifier in zip(names, classifiers): 
