@@ -26,8 +26,9 @@ from sklearn.neighbors import KNeighborsRegressor, RadiusNeighborsRegressor
 
 np.random.seed(0)
 X = np.sort(5 * np.random.rand(40, 1), axis=0)
-T = np.linspace(0, 5, 500)[:, np.newaxis]
 y = np.sin(X).ravel()
+T = np.linspace(0, 5, 500)[:, np.newaxis]
+y_test = np.sin(T).ravel()
 
 # Add noise to targets
 y[::5] += 1 * (0.5 - np.random.rand(8))
@@ -55,18 +56,24 @@ classifiers = [
 	RadiusNeighborsRegressor()
 ]
 
-i = 0 
-plt.plot(3,3)
+i = 1 
+x_num = len(names)
+y_num = 1
+X_size = 1.6
+Y_size = 8.0
+plt.subplots(x_num, y_num, sharey = True, figsize=(y_num * Y_size, x_num * X_size) )
+
 for name, classifier in zip(names, classifiers): 
     y_ = classifier.fit(X, y).predict(T)
-
+    score = classifier.score(T, y_test)
     
-    plt.subplot( len(names), 1, i + 1 )
+    plt.subplot( x_num, y_num, i )
     plt.scatter(X, y, c='k', label='data')
     plt.plot(T, y_, c='g', label='prediction')
     plt.axis('auto')
     plt.legend()
-    plt.title(name)
+    plt.title(name+" "+str(score))
     i += 1
 
+plt.subplots_adjust(hspace=0.4)
 plt.show()
